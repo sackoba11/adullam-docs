@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
+    "title": "Adullan",
+    "description": "",
     "license": {
       "name": "MIT"
     },
@@ -19,30 +19,48 @@
     }
   ],
   "paths": {
-    "/plants": {
+    "/v1/checkouts": {
       "get": {
-        "description": "Returns all plants from the system that the user has access to",
+        "tags":"Checkout",
+        "summary": "Checkout sessions",
         "parameters": [
           {
-            "name": "limit",
+            "name": "status",
             "in": "query",
-            "description": "The maximum number of results to return",
+            "description": "Retrieve all checkout operations (failed, sucess)",
             "schema": {
+              "enum":["created","pending","processing","completed","failed","expired","cancelled"]
+              "type": "string",
+            },
+          },
+          {
+            "name":"limit",
+            "in":"query",
+            "schema": {
+              "default":50,
               "type": "integer",
-              "format": "int32"
+              "format": "int64",
+            
             }
-          }
+          },
+          {
+            "name":"offset",
+            "in":"query",
+            "schema": {
+              "default":0,
+              "type": "integer",
+              "format": "int64",
+            
+            }
+          },
         ],
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "Sessions",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
+                    "$ref": "#/components/schemas/CheckoutSessionsList"
                 }
               }
             }
